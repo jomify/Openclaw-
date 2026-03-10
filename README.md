@@ -1,26 +1,28 @@
 # OpenCode / Codex 接管式安装：从 `nvm` 到 `OpenClaw + Feishu`
 
 > [!IMPORTANT]
-> 这份文档的核心不是“手工配置 OpenClaw”，这是一份用AGNET代理完成的openclaw部署，大幅降低配置时间。
+> 这份文档的核心不是“手工配置 OpenClaw”，而是用 agent 代理完成 OpenClaw 部署，大幅降低配置时间。
 
 > [!NOTE]
 > 截至 **2026-03-10**，OpenClaw 官方与 OpenCode 官方都更推荐 Windows 用户优先使用 **WSL2**。本文先给出 **原生 Windows** 路线，并在文末说明何时应切换到 WSL2。
 
 ## 目录
 
-- [总览](#总览)
-- [阶段 0：准备项](#阶段-0准备项)
-- [阶段 1：安装 nvm-windows](#阶段-1安装-nvm-windows)
-- [阶段 2：用 nvm 安装 Node.js](#阶段-2用-nvm-安装-nodejs)
-- [阶段 3：安装并登录 OpenCode](#阶段-3安装并登录-opencode)
-- [阶段 4：让 OpenCode 或 Codex 接管电脑](#阶段-4让-opencode-或-codex-接管电脑)
-- [阶段 5：由 agent 安装并配置 OpenClaw](#阶段-5由-agent-安装并配置-openclaw)
-- [阶段 6：人工完成 Feishu 后台](#阶段-6人工完成-feishu-后台)
-- [阶段 7：首轮联调](#阶段-7首轮联调)
-- [常见问题](#常见问题)
-- [何时切换到 WSL2](#何时切换到-wsl2)
+- [总览](#overview)
+- [阶段 0：准备项](#stage-0)
+- [阶段 1：安装 nvm-windows](#stage-1)
+- [阶段 2：用 nvm 安装 Node.js](#stage-2)
+- [阶段 3：安装并登录 OpenCode](#stage-3)
+- [阶段 4：让 OpenCode 或 Codex 接管电脑](#stage-4)
+- [阶段 5：由 agent 安装并配置 OpenClaw](#stage-5)
+- [阶段 6：人工完成 Feishu 后台](#stage-6)
+- [阶段 7：首轮联调](#stage-7)
+- [常见问题](#faq)
+- [何时切换到 WSL2](#wsl2)
 
 ---
+
+<a id="overview"></a>
 
 ## 总览
 
@@ -28,13 +30,13 @@
 
 ```mermaid
 flowchart LR
-    A[nvm-windows] --> B[Node.js LTS]
-    B --> C[OpenCode 或 Codex]
-    C --> D[OpenClaw]
-    D --> E[@openclaw/feishu]
-    D --> F[@openclaw/acpx]
-    F --> G[opencode ACP agent]
-    E --> H[Feishu]
+    A["nvm-windows"] --> B["Node.js LTS"]
+    B --> C["OpenCode / Codex"]
+    C --> D["OpenClaw"]
+    D --> E["feishu plugin"]
+    D --> F["acpx plugin"]
+    F --> G["opencode ACP agent"]
+    E --> H["Feishu"]
 ```
 
 ### 最终效果
@@ -63,6 +65,8 @@ Feishu -> OpenClaw Gateway -> ACP(acpx) -> opencode agent
 
 ---
 
+<a id="stage-0"></a>
+
 ## 阶段 0：准备项
 
 在开始前，先确认这几项：
@@ -78,6 +82,8 @@ Feishu -> OpenClaw Gateway -> ACP(acpx) -> opencode agent
 > `nvm-windows` 与旧 Node 安装残留发生冲突，是后面最常见的问题之一。
 
 ---
+
+<a id="stage-1"></a>
 
 ## 阶段 1：安装 nvm-windows
 
@@ -129,6 +135,8 @@ nvm version
 
 ---
 
+<a id="stage-2"></a>
+
 ## 阶段 2：用 nvm 安装 Node.js
 
 ### 2.1 推荐版本
@@ -172,6 +180,8 @@ npm -v
 </details>
 
 ---
+
+<a id="stage-3"></a>
 
 ## 阶段 3：安装并登录 OpenCode
 
@@ -238,6 +248,8 @@ opencode
 
 ---
 
+<a id="stage-4"></a>
+
 ## 阶段 4：让 OpenCode 或 Codex 接管电脑
 
 这一步先不安装 OpenClaw，只验证 agent 是否具备真正的本机接管能力。
@@ -268,6 +280,8 @@ agent 能明确给出这几类反馈：
 如果这一步都通不过，就不要继续推进 OpenClaw。
 
 ---
+
+<a id="stage-5"></a>
 
 ## 阶段 5：由 agent 安装并配置 OpenClaw
 
@@ -323,6 +337,8 @@ ACP 部分至少应收敛到：
 > 这里的 `opencode` 指的是 **ACP agent**，不是 `opencode/某个模型`。
 
 ---
+
+<a id="stage-6"></a>
 
 ## 阶段 6：人工完成 Feishu 后台
 
@@ -408,6 +424,8 @@ App Secret: xxxxxxxxxx
 
 ---
 
+<a id="stage-7"></a>
+
 ## 阶段 7：首轮联调
 
 当 agent 报告下面这些状态后，就可以开始测试：
@@ -454,6 +472,8 @@ App Secret: xxxxxxxxxx
 > 先把链路跑通，再考虑更复杂的 thread binding。
 
 ---
+
+<a id="faq"></a>
 
 ## 常见问题
 
@@ -577,6 +597,8 @@ dmPolicy: "pairing"
 
 ---
 
+<a id="wsl2"></a>
+
 ## 何时切换到 WSL2
 
 如果出现下面任一情况，继续坚持原生 Windows 通常收益不高：
@@ -644,5 +666,3 @@ opencode
 - Lark 开放平台: https://open.larksuite.com/app
 
 ---
-
-
